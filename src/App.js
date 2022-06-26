@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Favorite from "./pages/Favorite";
+import MoviesDetails from "./pages/MoviesDetails";
+import MoviesList from "./pages/MoviesList";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import NavBar from "./components/NavBar";
+import SearchResults from "./pages/SearchResults";
+import { useState } from "react";
+import LangContext from "./context/lang";
+
+
 
 function App() {
+const [dLang,setDLang] = useState("en");
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <LangContext.Provider value={{dLang,setDLang}}>
+        <NavBar/>
+        <Routes>
+          <Route path={"/"} element = {<Home/>}></Route>
+          <Route path={"/movies"} element = {<MoviesList/>}></Route>
+          <Route path={"/movies/:id"} element = {<MoviesDetails/>}></Route>
+          <Route path={"/favorite"} element = {<Favorite/>}></Route>
+          <Route path={"/search/:query"} element = {<SearchResults/>}></Route>
+          <Route path={"*"} element = {<NotFound/>}></Route>
+        </Routes>
+      </LangContext.Provider>
+    </BrowserRouter>
+    );
 }
 
 export default App;
